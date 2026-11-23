@@ -1,0 +1,93 @@
+setting aside driver id for unbiased training for now
+should hide accidemt record from model too
+
+so model wont overtrain.
+
+nvm shouldnt hide accident record. need to use to evaluate outcome
+
+binary classification with sigmoid? or just y/n model
+
+use sigmoid function 1/1+e^(-z) for 0-1.0 probability
+
+cant use specified hyperparameter - outcome always 89.4%.
+
+cus of prenoted data 1380 vs 164 safe vs dangerous.
+
+must tune hyperparameters to get best ROC-AUC and recall for test set
+
+
+
+hidden layer 32/16 neurons (2 layer) doesnt overfit hopefully
+dropout rate set to 0.2 
+
+learning rate set to 0.01
+nope set to 0.015
+0.08
+0.09
+0.0075
+0.003
+0.001
+
+epoch 40 is peak
+
+batch size 45
+35
+36
+32
+
+class weight
+0:1.0, 1:8.4
+penalty
+
+decision threshold?
+0.4
+nvm too many false positive
+0.5 
+
+super overfitted
+
+app doesnt fking work
+
+![alt text](image.png) medium is 30-60%, sitting on the fence
+class_weights penalized missed incidents heavily while the network struggled to separate safe vs. risky habits, the ANN defaulted to guessing probabilities right around the 40%–55% coin-flip zone.
+
+as total alarms increased to 6000+, risk probability drifts from 10% to 50-80% range
+High false positives rate 
+
+32-16
+0.2 dropout rate
+0.001 learning rate
+32 batch size
+40 epoch
+
+16-8 - reduce trainable weight to prevent memorization
+0.4 dropout rate - force model to learn broader pattern
+0.0005 learning rate smaller steps so Adam doesnt overshoot
+64 batch size - avg gradients over larger batches for smoother weight updates
+25 epoch - stop training earlier before gap between training and validation widens
+
+![alt text](image-1.png)
+overfitting fixed, but need feature engineering
+
+behavioral ratio
+divide each alarm by total_alarm
+
+speed spread
+max speed - avg speed for speed difference. bigger gap, more erratic
+
+np.log1
+
+use log to reduct multiplier
+but keep same weight
+
+soften class_weight to 3.5
+
+cant use accuracy as reliable metric. since there are 89.5% safe drivers, high accuracy just means flagging everyone safe. high accuracy not equals to accuracy in flagging at risk driver.
+
+recall. ast risk recall -> at-risk drivers correctly caught/33 (test set).
+how many did model flag out of the 33 who had accidents in Q1?
+
+AUC-ROC- how reliable a model ranks actual risky drivers higher than safe ones.
+
+stratified kfold strat
+nope didnt work
